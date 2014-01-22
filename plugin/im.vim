@@ -49,12 +49,12 @@ begin
   @context.introspect
   @context.default_iface = IBUS_INTERFACE_INPUTCONTEXT
   VIM::command "let g:dbus_loaded=1"
-rescue DBus::Error => dex
-  VIM::command "silent echo \"vim-im failed to init dbus interface. Disabling plugin\""
 rescue LoadError => lex
-  VIM::command "silent echo \"vim-im failed to load ruby-dbus gem. Disabling plugin\""
+  VIM::command "silent echom \"vim-im failed to load ruby-dbus gem. Disabling plugin\""
+rescue DBus::Error => dex
+  VIM::command "silent echom \"vim-im failed to init dbus interface. Disabling plugin\""
 rescue => ex
-  VIM::command "silent echo \"#{ex}\""
+  VIM::command "silent echom \"vim-im : #{ex}\""
 end
 EOF
 

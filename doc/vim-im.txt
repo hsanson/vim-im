@@ -1,0 +1,112 @@
+*vim-im.txt*           For Vim version 7.3    Last change: 2014 January 22
+
+Author:         Horacio Sanson
+Licence:        Vim licence, see |license|
+Homepage:       https://github.com/hsanson/vim-im
+Version:        0.0.1
+
+==============================================================================
+Contents                                            *vim-im* *vim-im-contents*
+
+         1. Intro ........................... |vim-im-intro|
+         2. Requirements .................... |vim-im-requirements|
+         3. Installation .................... |vim-im-installation|
+         4. Usage ........................... |vim-im-usage|
+         5. Todo ............................ |vim-im-todo|
+         6. Credits ......................... |vim-im-credits|
+
+==============================================================================
+1. Intro                                                      *vim-im-intro*
+
+Non english speakers that use vim to write in Japanese, Korean, Chinese or any
+other language that requires a different input method must deal with the fact
+that vim normal mode does not work if any of these input methods is enabled.
+For this reason these users are forced to press an additional key when
+switching between insert and normal modes:
+
+  - press i to enter inser mode
+  - press C-space or Kana key to switch on input method
+  - write some text
+  - press C-space or Kana key to switch off input method
+  - press ESC to exit insert mode
+
+If the user forgets to disable the input method before exiting insert mode she
+will find that all commands in normal mode fail silently. This is because
+normal mode does not work if the input method is enabled.
+
+This plugin tries to aleviate this issues by automagically switching off the
+input method when leaving insert mode and enabling it back when entering
+insert mode, but only if it was enabled before switching to normal mode.
+
+==============================================================================
+2. Requirements                                           *vim-im-requirements*
+
+This plugin uses DBUS interface to manipulate the IBus daemon. This means
+that this plugin works only if your OS supports DBUS and uses IBus as input
+method switcher.
+
+I have tested this in Ubuntu running KDE4 as desktop environment.
+
+This plugin has these requirements:
+
+  - OS with DBUS support. Most Linux distros support DBUS.
+  - IBus as input method switcher. Make sure you install ibus and configure it
+    correctly.
+  - Vim 7.3 or higher. This plugin may also work with previous versions but I
+    have only tested Vim 7.3.
+  - Vim must be compiled with ruby support (+ruby).
+  - You must have the ruby-dbus gem installed in your system.
+
+==============================================================================
+3. Installation                                        *vim-im-installation*
+
+It is recommended that you use a package manager like Pathogen or Vundle to
+install this plugin. In the case of Vundle all you have to do is add this
+line to your vimrc:
+>
+       Bundle 'hsanson/vim-im'
+<
+and then inside vim run the |:BundleInstall| command.
+
+Make sure your vim has ruby support in it. To check this run:
+
+        vim --version
+
+and make sure the +ruby flag is present. If it is not you may need to compile
+vim from source with the --enable-rubyinterp flag. In Ubuntu you can get ruby
+support installing the vim-ruby package.
+
+Also install the ruby-dbus gem that is needed to allow ruby to manipulate the
+ibus via DBUS:
+
+        sudo gem install ruby-dbus
+
+==============================================================================
+4. Usage                                                        *vim-im-usage*
+
+This plugins should work out of the box without any additional configurations
+on your vimrc. Simple edit a file and when insert mode switch your input
+method using IBus as usual (e.g. pressing C-space). If you exit insert mode
+with while the input method is enabled the plugin will disable it when
+entering normal mode and re-enable it back if you enter insert mode again.
+
+==============================================================================
+5. Todo                                                          *vim-im-todo*
+
+  - When this plugin is enabled the switch from insert mode to normal mode can
+    take a few seconds. I assume is due to the ruby interpreter being started.
+    I need to investigate how to avoid this delay.
+  - If the IBus daemon is restarted while vim is still running we start
+    getting errors about broken pipes when switching between insert and normal
+    mode.
+
+==============================================================================
+6. Credits                                                *vim-im-credits*
+
+ - https://github.com/vim-scripts/LustyExplorer plugin served as base to learn
+   how to write ruby plugins.
+ - https://gist.github.com/noborus/7541419 gist shows how to manipulate ibus
+   via DBUS in ruby.
+
+==============================================================================
+ vim: tw=78 ts=8 sw=4 sts=4 et ft=help

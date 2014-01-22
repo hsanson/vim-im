@@ -58,17 +58,6 @@ rescue => ex
 end
 EOF
 
-function! im#logi(msg)
-  redraw
-  echomsg "im: " . msg
-endfunction
-
-function! im#loge(msg)
-  echohl errormsg
-  echo "im: " . msg
-  echohl normal
-endfunction
-
 function! im#disable()
 ruby << EOF
 if ! @context.nil?

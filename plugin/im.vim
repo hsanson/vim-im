@@ -20,8 +20,6 @@ let g:loaded_im_plugin = 1
 
 ruby << EOF
 
-require "dbus"
-
 IBUS_SERVICE="org.freedesktop.IBus"
 IBUS_PATH_IBUS="/org/freedesktop/IBus"
 IBUS_INTERFACE_IBUS="org.freedesktop.IBus"
@@ -37,17 +35,27 @@ def get_address
   end
 end
 
-bus = DBus::RemoteBus.new(get_address)
-service = bus.service(IBUS_SERVICE)
+begin
+  require "dbus"
+  bus = DBus::RemoteBus.new(get_address)
+  service = bus.service(IBUS_SERVICE)
 
-ibus = service.object(IBUS_PATH_IBUS)
-ibus.introspect
-ibus.default_iface = ibus[IBUS_INTERFACE_IBUS]
-ic_name = ibus.CurrentInputContext[0]
+  ibus = service.object(IBUS_PATH_IBUS)
+  ibus.introspect
+  ibus.default_iface = ibus[IBUS_INTERFACE_IBUS]
+  ic_name = ibus.CurrentInputContext[0]
 
-@context = service.object(ic_name)
-@context.introspect
-@context.default_iface = IBUS_INTERFACE_INPUTCONTEXT
+  @context = service.object(ic_name)
+  @context.introspect
+  @context.default_iface = IBUS_INTERFACE_INPUTCONTEXT
+  VIM::command "let g:dbus_loaded=1"
+rescue DBus::Error => dex
+  VIM::command "silent echo \"vim-im failed to init dbus interface. Disabling plugin\""
+rescue LoadError => lex
+  VIM::command "silent echo \"vim-im failed to load ruby-dbus gem. Disabling plugin\""
+rescue => ex
+  VIM::command "silent echo \"#{ex}\""
+end
 EOF
 
 function! im#logi(msg)
@@ -63,18 +71,20 @@ endfunction
 
 function! im#disable()
 ruby << EOF
-if @context.IsEnabled[0]
-  VIM::command "let b:im_enabled=1"
-else
-  VIM::command "let b:im_enabled=0"
+if ! @context.nil?
+  if @context.IsEnabled[0]
+    VIM::command "let b:im_enabled=1"
+  else
+    VIM::command "let b:im_enabled=0"
+  end
+  @context.Disable
 end
-@context.Disable
 EOF
 endfunction
 
 function! im#enable()
   if exists("b:im_enabled") && b:im_enabled == 1
-    ruby @context.Enable
+    ruby @context.Enable if ! @context.nil?
   endif
 endfunction
 

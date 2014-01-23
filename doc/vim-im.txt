@@ -1,9 +1,9 @@
-*vim-im.txt*           For Vim version 7.3    Last change: 2014 January 22
+*vim-im.txt*           For Vim version 7.3    Last change: 2014 January 23
 
 Author:         Horacio Sanson
 Licence:        Vim licence, see |license|
 Homepage:       https://github.com/hsanson/vim-im
-Version:        0.0.1
+Version:        0.0.2
 
 ==============================================================================
 Contents                                            *vim-im* *vim-im-contents*
@@ -54,8 +54,9 @@ This plugin has these requirements:
     correctly.
   - Vim 7.3 or higher. This plugin may also work with previous versions but I
     have only tested Vim 7.3.
-  - Vim must be compiled with ruby support (+ruby).
-  - You must have the ruby-dbus gem installed in your system.
+  - Vim must be compiled with ruby support (+ruby) or python support (+python).
+  - You must have the ruby-dbus gem installed in your system if using ruby
+    or the python-ibus package if using python.
 
 ==============================================================================
 3. Installation                                        *vim-im-installation*
@@ -68,37 +69,39 @@ line to your vimrc:
 <
 and then inside vim run the |:BundleInstall| command.
 
-Make sure your vim has ruby support in it. To check this run:
+Make sure your vim has ruby or python support in it. To check this run:
 
         vim --version
 
-and make sure the +ruby flag is present. If it is not you may need to compile
-vim from source with the --enable-rubyinterp flag. In Ubuntu you can get ruby
-support installing the vim-ruby package.
+if you see the +ruby flag then your vim has ruby support built in and if you
+see the +python flag then you have python support. If you don't have either
+flag then you may need to recompile vim to add them or install additional
+packages like vim-ruby.
 
-Also install the ruby-dbus gem that is needed to allow ruby to manipulate the
-ibus via DBUS:
+If you want to use the ruby version of the plugin you need to install the
+ruby-dbus gem:
 
         sudo gem install ruby-dbus
+
+if you prefer the python version then install the python-ibus package:
+
+        sudo apt-get install python-ibus
 
 ==============================================================================
 4. Usage                                                        *vim-im-usage*
 
 This plugins should work out of the box without any additional configurations
-on your vimrc. Simple edit a file and when insert mode switch your input
+in your vimrc. Simple edit a file and when insert mode switch your input
 method using IBus as usual (e.g. pressing C-space). If you exit insert mode
-with while the input method is enabled the plugin will disable it when
-entering normal mode and re-enable it back if you enter insert mode again.
+while the input method is enabled the plugin will disable and re-enable it back
+if you enter insert mode again.
 
 ==============================================================================
 5. Todo                                                          *vim-im-todo*
 
   - When this plugin is enabled the switch from insert mode to normal mode can
-    take a few seconds. I assume is due to the ruby interpreter being started.
+    take a few seconds. I assume is due to the ruby/python interpreter being started.
     I need to investigate how to avoid this delay.
-  - If the IBus daemon is restarted while vim is still running we start
-    getting errors about broken pipes when switching between insert and normal
-    mode.
 
 ==============================================================================
 6. Credits                                                *vim-im-credits*
@@ -107,6 +110,8 @@ entering normal mode and re-enable it back if you enter insert mode again.
    how to write ruby plugins.
  - https://gist.github.com/noborus/7541419 gist shows how to manipulate ibus
    via DBUS in ruby.
+ - https://github.com/fuenor/im_control.vim.git served as example for python
+   version of the plugin.
 
 ==============================================================================
  vim: tw=78 ts=8 sw=4 sts=4 et ft=help

@@ -1,5 +1,8 @@
 
 function! ruby#hasRubyDbus()
+  if ! has("ruby")
+    return 0
+  endif
 ruby << EOF
   begin
     require "dbus"

@@ -3,7 +3,7 @@
 Author:         Horacio Sanson
 Licence:        Vim licence, see |license|
 Homepage:       https://github.com/hsanson/vim-im
-Version:        0.0.2
+Version:        0.1.0
 
 ==============================================================================
 Contents                                            *vim-im* *vim-im-contents*
@@ -12,6 +12,8 @@ Contents                                            *vim-im* *vim-im-contents*
          2. Requirements .................... |vim-im-requirements|
          3. Installation .................... |vim-im-installation|
          4. Usage ........................... |vim-im-usage|
+            4.1 iBus < 1.5.0................. |vim-im-usage-old|
+            4.2 iBus > 1.5.0................. |vim-im-usage-new|
          5. Todo ............................ |vim-im-todo|
          6. Credits ......................... |vim-im-credits|
 
@@ -32,11 +34,11 @@ switching between insert and normal modes:
 
 If the user forgets to disable the input method before exiting insert mode she
 will find that all commands in normal mode fail silently. This is because
-normal mode does not work if the input method is enabled.
+normal mode does not work if a non ASCII input method is enabled.
 
 This plugin tries to aleviate this issues by automagically switching off the
-input method when leaving insert mode and enabling it back when entering
-insert mode, but only if it was enabled before switching to normal mode.
+input method or set a default input method that works in normal mode when
+leaving insert mode.
 
 ==============================================================================
 2. Requirements                                           *vim-im-requirements*
@@ -45,7 +47,8 @@ This plugin uses DBUS interface to manipulate the IBus daemon. This means
 that this plugin works only if your OS supports DBUS and uses IBus as input
 method switcher.
 
-I have tested this in Ubuntu running KDE4 as desktop environment.
+I have tested this in Ubuntu 13.04 and Debian Jessie running KDE4 as desktop
+environment.
 
 This plugin has these requirements:
 
@@ -54,9 +57,8 @@ This plugin has these requirements:
     correctly.
   - Vim 7.3 or higher. This plugin may also work with previous versions but I
     have only tested Vim 7.3.
-  - Vim must be compiled with ruby support (+ruby) or python support (+python).
-  - You must have the ruby-dbus gem installed in your system if using ruby
-    or the python-ibus package if using python.
+  - Vim must be compiled with python support (+python).
+  - You must have the python-ibus package insalled in your system.
 
 ==============================================================================
 3. Installation                                        *vim-im-installation*
@@ -69,42 +71,67 @@ line to your vimrc:
 <
 and then inside vim run the |:BundleInstall| command.
 
-Make sure your vim has ruby or python support in it. To check this run:
+Make sure your vim has python support in it. To check this run:
 
         vim --version
 
-if you see the +ruby flag then your vim has ruby support built in and if you
-see the +python flag then you have python support. If you don't have either
-flag then you may need to recompile vim to add them or install additional
-packages like vim-ruby.
+if you see the +python flag then you have python support. If you don't
+see the flag then you may need to recompile vim to add python support.
 
-If you want to use the ruby version of the plugin you need to install the
-ruby-dbus gem:
-
-        sudo gem install ruby-dbus
-
-if you prefer the python version then install the python-ibus package:
+Make sure you have python ibus bindings installed:
 
         sudo apt-get install python-ibus
 
 ==============================================================================
 4. Usage                                                        *vim-im-usage*
 
-This plugins should work out of the box without any additional configurations
-in your vimrc. Simple edit a file and when insert mode switch your input
-method using IBus as usual (e.g. pressing C-space). If you exit insert mode
-while the input method is enabled the plugin will disable and re-enable it back
-if you enter insert mode again.
+Since the iBus architecture changed significatively in version 1.5.0 this
+plugin works in two different modes. If you have iBus version lower than
+1.5.0 then this plugin should work out of the box without any additional
+configurations in your vimrc. If you have iBus version above 1.5.0 then you
+may need to set the *g:im_default_methods* variable to let the plugin know
+which input method to set when entering normal mode.
+
+4.1. iBus < 1.5.0                                            *vim-im-usage-old*
+
+If your system has iBus with version older than 1.5.0 like Ubuntu 13.04 then
+you do not need to add any configuration options to your vimrc file. All this
+plugin does is ensure that iBus input method is disabled when you enter
+Normal Mode.
+
+You can try it by entering Insert Mode and then switch you input method on.
+With the input method still exit Insert Mode and you will notice your input
+method is disabled once Vim enters Normal Mode. If you re-enter Insert Mode
+this plugin will enabled back the input method.
+
+4.2. iBus > 1.5.0                                            *vim-im-usage-new*
+
+Starting from iBus 1.5.0 onwards the architecture changed and it is no longer
+possible to disable/enable the input method. Instead we need to set an input
+method compatible with Normal Mode when we enter it.
+
+Unfortunately for iBus 1.5.0 onwards we can install different engines and
+each one has different input methods. For this reason we need to explicitely
+tell Vim which input method we want default in Normal Mode for each of the
+engines we use.
+
+For this you must define the *g:im_default_methods* variable in your vimrc.
+This variable is a simple dictionary that contains the name of the engine as
+key and the default input method as value.
+
+For example for the anthy and mozc-jp engines we have the following:
+
+        let g:im_default_methods = {
+                \ 'anthy'       :        'Latin',
+                \ 'mozc-jp'     :        'Direct'
+        \}
+
+What input method is best for Normal Mode depends on the engine you use so it
+is necessary to read the documentation or look at the configuration dialog of
+the engine to determine the best option to set.
 
 ==============================================================================
-5. Todo                                                          *vim-im-todo*
-
-  - When this plugin is enabled the switch from insert mode to normal mode can
-    take a few seconds. I assume is due to the ruby/python interpreter being started.
-    I need to investigate how to avoid this delay.
-
-==============================================================================
-6. Credits                                                *vim-im-credits*
+5. Credits                                                *vim-im-credits*
 
  - https://github.com/vim-scripts/LustyExplorer plugin served as base to learn
    how to write ruby plugins.

@@ -18,34 +18,29 @@ if version < 700
   finish
 endif
 
-if has("python")
-  let s:python_enabled = 1
-elseif ruby#hasRubyDbus()
-  let s:ruby_enabled = 1
-else
+if !ibus#python#enabled()
   echohl error
-  echo "vim-im requires vim compiled with python or ruby"
+  echo "vim-im could not find python ibus"
   echohl normal
   finish
 endif
 
 let g:loaded_im_plugin = 1
 
+if !exists('g:im_default_methods')
+  let g:im_default_methods = {
+        \ 'anthy'    :    'Latin',
+        \ 'mozc-jp'  :    'Direct'
+        \}
+endif
+
 function! im#disable()
-  if exists("s:python_enabled")
-    call python#disableIm()
-  elseif exists("s:ruby_enabled")
-    call ruby#disableIm()
-  endif
+  call ibus#disableIm()
 endfunction
 
 function! im#enable()
   if exists("b:im_enabled") && b:im_enabled == 1
-    if exists("s:python_enabled")
-      call python#enableIm()
-    elseif exists("s:ruby_enabled")
-      call ruby#enableIm()
-    endif
+    call ibus#enableIm()
   endif
 endfunction
 

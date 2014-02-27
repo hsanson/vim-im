@@ -153,12 +153,12 @@ function! ibus#python#setDefaultMode()
     return
   endif
 
-  let l:engine = im#getCurrentEngine()
+  let l:engine = ibus#python#currentEngine()
   let l:default = g:im_default_methods[l:engine]
 
   echo l:default
   if exists('l:default')
-    call im#setInputMode(l:default)
+    call ibus#python#setInputMode(l:default)
   else
     echo "No default input method defined for " . l:engine . " engine"
   endif

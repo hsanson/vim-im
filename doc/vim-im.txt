@@ -89,7 +89,7 @@ Since the iBus architecture changed significatively in version 1.5.0 this
 plugin works in two different modes. If you have iBus version lower than
 1.5.0 then this plugin should work out of the box without any additional
 configurations in your vimrc. If you have iBus version above 1.5.0 then you
-may need to set the *g:im_default_methods* variable to let the plugin know
+may need to set the |g:im_default_methods| variable to let the plugin know
 which input method to set when entering normal mode.
 
 4.1. iBus < 1.5.0                                            *vim-im-usage-old*

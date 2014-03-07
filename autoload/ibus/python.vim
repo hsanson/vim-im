@@ -76,9 +76,11 @@ endfunction
 
 function! ibus#python#currentEngine()
 
+  let g:im_current_engine = ''
+
   if ibus#python#version() < 150
     echo "Function not available for ibus " . ibus#version()
-    return
+    return g:im_current_engine
   endif
 
 python << EOF

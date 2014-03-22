@@ -9,8 +9,9 @@ function! ibus#python#enabled()
   endif
 
 python << EOF
+import vim
 try:
-  import ibus,vim
+  import ibus
   bus = ibus.Bus()
   vim.command("let g:ibus_python_enabled = 1")
 except Exception, e:

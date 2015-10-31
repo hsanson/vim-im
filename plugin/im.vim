@@ -18,30 +18,25 @@ if version < 700
   finish
 endif
 
-if !ibus#python#enabled()
-  echohl error
-  echo "vim-im could not find python ibus"
-  echohl normal
-  finish
-endif
-
 let g:loaded_im_plugin = 1
 
-if !exists('g:im_default_methods')
-  let g:im_default_methods = {
-        \ 'anthy'    :    'Latin',
-        \ 'mozc-jp'  :    'Direct'
-        \}
-endif
-
 function! im#disable()
-  call ibus#disableIm()
+  if im#enabled()
+    let b:im_enabled=1
+  else
+    let b:im_enabled=0
+  endif
+  call system('fcitx-remote -c')
 endfunction
 
 function! im#enable()
   if exists("b:im_enabled") && b:im_enabled == 1
-    call ibus#enableIm()
+    call system('fcitx-remote -o')
   endif
+endfunction
+
+function! im#enabled()
+  return system('fcitx-remote')[0] is# '2'
 endfunction
 
 command! ImEnable call im#enable()

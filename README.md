@@ -4,28 +4,11 @@ Simple plugin that allows vim to enable/disable the IBus input method when enter
 
 # Requirements
 
-  - OS with DBUS support.
-  - IBus as input method switcher.
-  - Vim 7.3 with python interpreter (+python).
-  - Python ibus package installed if you use python interpreter.
+This plugin works only with fcitx input method and depends on the fcitx-remote command line to do the heavy lifting. You must ensure you have at least two input methods configured to allow fcitx-remote to enable/disable the input method by switching between them.
 
 # Installation
 
-Make sure your vim is 7.3 or greater and has python support compiled in. To check if it has python run the command:
-
-```
-vim --version
-```
-
-and if you see the +python flags then you have python compiled in.
-
-Also make sure you have the python-ibus bindings installed:
-
-```
-sudo apt-get install python-ibus
-```
-
-Finally add the plugin to your vim using either Vundle or Pathogen:
+Add the plugin to your vim using either Vundle or Pathogen:
 
 ```
 Bundle 'hsanson/vim-im'

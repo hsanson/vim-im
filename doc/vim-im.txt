@@ -3,7 +3,7 @@
 Author:         Horacio Sanson
 Licence:        Vim licence, see |license|
 Homepage:       https://github.com/hsanson/vim-im
-Version:        0.1.0
+Version:        0.1.5
 
 ==============================================================================
 Contents                                            *vim-im* *vim-im-contents*
@@ -26,10 +26,10 @@ that vim normal mode does not work if any of these input methods is enabled.
 For this reason these users are forced to press an additional key when
 switching between insert and normal modes:
 
-  - press i to enter inser mode
-  - press C-space or Kana key to switch on input method
+  - press i to enter insert mode
+  - press Ctrl-Space or Kana key to switch on input method
   - write some text
-  - press C-space or Kana key to switch off input method
+  - press Ctrl-Space or Kana key to switch off input method
   - press ESC to exit insert mode
 
 If the user forgets to disable the input method before exiting insert mode she
@@ -43,22 +43,9 @@ leaving insert mode.
 ==============================================================================
 2. Requirements                                           *vim-im-requirements*
 
-This plugin uses DBUS interface to manipulate the IBus daemon. This means
-that this plugin works only if your OS supports DBUS and uses IBus as input
-method switcher.
-
-I have tested this in Ubuntu 13.04 and Debian Jessie running KDE4 as desktop
-environment.
-
-This plugin has these requirements:
-
-  - OS with DBUS support. Most Linux distros support DBUS.
-  - IBus as input method switcher. Make sure you install ibus and configure it
-    correctly.
-  - Vim 7.3 or higher. This plugin may also work with previous versions but I
-    have only tested Vim 7.3.
-  - Vim must be compiled with python support (+python).
-  - You must have the python-ibus package insalled in your system.
+This plugin works only with fcitx input method and depends on the
+fcitx-remote command to do the heavy work. Ensure you have two input methods
+to allow fcitx-remote alternate between them to enable/disable it.
 
 ==============================================================================
 3. Installation                                        *vim-im-installation*
@@ -71,64 +58,15 @@ line to your vimrc:
 <
 and then inside vim run the |:BundleInstall| command.
 
-Make sure your vim has python support in it. To check this run:
-
-        vim --version
-
-if you see the +python flag then you have python support. If you don't
-see the flag then you may need to recompile vim to add python support.
-
-Make sure you have python ibus bindings installed:
-
-        sudo apt-get install python-ibus
-
 ==============================================================================
 4. Usage                                                        *vim-im-usage*
 
-Since the iBus architecture changed significatively in version 1.5.0 this
-plugin works in two different modes. If you have iBus version lower than
-1.5.0 then this plugin should work out of the box without any additional
-configurations in your vimrc. If you have iBus version above 1.5.0 then you
-may need to set the |g:im_default_methods| variable to let the plugin know
-which input method to set when entering normal mode.
+Everything should work out of the box. Exiting insert mode should disable any
+input method enabled and entering insert mode should re-enable it.
 
-4.1. iBus < 1.5.0                                            *vim-im-usage-old*
-
-If your system has iBus with version older than 1.5.0 like Ubuntu 13.04 then
-you do not need to add any configuration options to your vimrc file. All this
-plugin does is ensure that iBus input method is disabled when you enter
-Normal Mode.
-
-You can try it by entering Insert Mode and then switch you input method on.
-With the input method still exit Insert Mode and you will notice your input
-method is disabled once Vim enters Normal Mode. If you re-enter Insert Mode
-this plugin will enabled back the input method.
-
-4.2. iBus > 1.5.0                                            *vim-im-usage-new*
-
-Starting from iBus 1.5.0 onwards the architecture changed and it is no longer
-possible to disable/enable the input method. Instead we need to set an input
-method compatible with Normal Mode when we enter it.
-
-Unfortunately for iBus 1.5.0 onwards we can install different engines and
-each one has different input methods. For this reason we need to explicitely
-tell Vim which input method we want default in Normal Mode for each of the
-engines we use.
-
-For this you must define the *g:im_default_methods* variable in your vimrc.
-This variable is a simple dictionary that contains the name of the engine as
-key and the default input method as value.
-
-For example for the anthy and mozc-jp engines we have the following:
-
-        let g:im_default_methods = {
-                \ 'anthy'       :        'Latin',
-                \ 'mozc-jp'     :        'Direct'
-        \}
-
-What input method is best for Normal Mode depends on the engine you use so it
-is necessary to read the documentation or look at the configuration dialog of
-the engine to determine the best option to set.
+This plugin keeps track of the input method enabled status per buffer so it
+re-enables the input method only if it was enabled at the moment the user
+exited insert mode.
 
 ==============================================================================
 5. Credits                                                *vim-im-credits*

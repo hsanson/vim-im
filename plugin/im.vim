@@ -43,5 +43,6 @@ command! ImEnable call im#enable()
 command! ImDisable call im#disable()
 
 " Disable IM input when exiting InsertMode
+autocmd VimEnter * call im#disable()
 autocmd InsertLeave * call im#disable()
 autocmd InsertEnter * call im#enable()

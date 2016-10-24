@@ -44,8 +44,19 @@ leaving insert mode.
 2. Requirements                                           *vim-im-requirements*
 
 This plugin works only with fcitx input method and depends on the
-fcitx-remote command to do the heavy work. Ensure you have two input methods
-to allow fcitx-remote alternate between them to enable/disable it.
+fcitx-remote command to do the heavy work. In Ubuntu you can install it
+using apt-get:
+>
+       sudo apt-get install fcitx-bin
+<
+For this plugin to work correctly you must have at least two input methods
+configured in fcitx. Add a keyboard input method as the first one and your
+main input method as the second one. With this configuration this plugin will
+enable the keyboard (first one) input method on NORMAL mode.
+
+You can run the *fcitx-diagnose* tool to check if you have two input methods
+configured. If you don't this command will print a warning telling you that
+you should add a default keyboard input method.
 
 ==============================================================================
 3. Installation                                        *vim-im-installation*

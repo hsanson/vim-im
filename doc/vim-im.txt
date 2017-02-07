@@ -3,7 +3,7 @@
 Author:         Horacio Sanson
 Licence:        Vim licence, see |license|
 Homepage:       https://github.com/hsanson/vim-im
-Version:        0.1.5
+Version:        1.0.0
 
 ==============================================================================
 Contents                                            *vim-im* *vim-im-contents*
@@ -12,10 +12,7 @@ Contents                                            *vim-im* *vim-im-contents*
          2. Requirements .................... |vim-im-requirements|
          3. Installation .................... |vim-im-installation|
          4. Usage ........................... |vim-im-usage|
-            4.1 iBus < 1.5.0................. |vim-im-usage-old|
-            4.2 iBus > 1.5.0................. |vim-im-usage-new|
-         5. Todo ............................ |vim-im-todo|
-         6. Credits ......................... |vim-im-credits|
+         5. Credits ......................... |vim-im-credits|
 
 ==============================================================================
 1. Intro                                                      *vim-im-intro*

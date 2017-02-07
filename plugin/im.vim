@@ -39,10 +39,19 @@ function! im#enabled()
   return system('fcitx-remote')[0] is# '2'
 endfunction
 
+function! im#start()
+  if mode() == 'n' && im#enabled()
+    call im#disable()
+  endif
+endfunction
+
 command! ImEnable call im#enable()
 command! ImDisable call im#disable()
 
 " Disable IM input when exiting InsertMode
-autocmd VimEnter * call im#disable()
-autocmd InsertLeave * call im#disable()
-autocmd InsertEnter * call im#enable()
+augroup vimim
+  autocmd!
+  autocmd VimEnter * call im#start()
+  autocmd InsertLeave * call im#disable()
+  autocmd InsertEnter * call im#enable()
+augroup END

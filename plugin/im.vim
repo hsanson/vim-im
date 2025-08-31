@@ -26,17 +26,17 @@ function! im#disable()
   else
     let b:im_enabled=0
   endif
-  call system('fcitx-remote -c')
+  call system('fcitx5-remote -c')
 endfunction
 
 function! im#enable()
   if exists("b:im_enabled") && b:im_enabled == 1
-    call system('fcitx-remote -o')
+    call system('fcitx5-remote -o')
   endif
 endfunction
 
 function! im#enabled()
-  return system('fcitx-remote')[0] is# '2'
+  return system('fcitx5-remote')[0] is# '2'
 endfunction
 
 function! im#start()

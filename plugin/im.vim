@@ -52,6 +52,7 @@ command! ImDisable call im#disable()
 augroup vimim
   autocmd!
   autocmd VimEnter * call im#start()
+  autocmd CmdlineLeave * call im#disable()
   autocmd InsertLeave * call im#disable()
   autocmd InsertEnter * call im#enable()
 augroup END

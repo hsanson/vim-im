@@ -20,14 +20,6 @@ Contents                                            *vim-im* *vim-im-contents*
 Non english speakers that use vim to write in Japanese, Korean, Chinese or any
 other language that requires a different input method must deal with the fact
 that vim normal mode does not work if any of these input methods is enabled.
-For this reason these users are forced to press an additional key when
-switching between insert and normal modes:
-
-  - press i to enter insert mode
-  - press Ctrl-Space or Kana key to switch on input method
-  - write some text
-  - press Ctrl-Space or Kana key to switch off input method
-  - press ESC to exit insert mode
 
 If the user forgets to disable the input method before exiting insert mode she
 will find that all commands in normal mode fail silently. This is because
@@ -58,14 +50,10 @@ you should add a default keyboard input method.
 ==============================================================================
 3. Installation                                        *vim-im-installation*
 
-It is recommended that you use a package manager like Pathogen or Vundle to
-install this plugin. In the case of Vundle all you have to do is add this
-line to your vimrc:
+Use your favorite package manager (e.g. Lazy, Pack) to install the plugin:
 >
-       Bundle 'hsanson/vim-im'
+    vim.pack.add({ "https://github.com/hsanson/vim-im" })
 <
-and then inside vim run the |:BundleInstall| command.
-
 ==============================================================================
 4. Usage                                                        *vim-im-usage*
 
